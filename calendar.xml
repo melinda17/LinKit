@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MYCALENDAR"> 
+
+<!-- addCalendar -->
+<insert id="addCalendar" parameterType="sist.co.model.CalendarDTO">
+	INSERT INTO MYCALENDAR  (SEQ, ID, TITLE, CONTENT, RDATE, WDATE)
+		VALUES (SEQ_CALENDAR.NEXTVAL, #{ID}, #{TITLE}, #{CONTENT}, #{RDATE}, SYSDATE)
+
+</insert>
+
+<!--getCalendarList  -->
+<select id="getCalendarList" parameterType="java.util.Map"
+							 resultType="sist.co.model.CalendarDTO">
+							 
+				SELECT seq, id, title, content, rdate, wdate 
+				 FROM (
+				 select row_number () 
+				 over ( partition by substr(rdate, 1, 8) 
+				 order by rdate asc ) rn, 
+				 seq, id, title, content, rdate, wdate 
+				 from mycalendar 
+				 where id = #{id} and substr(rdate, 1, 6) = #{yyyymm}
+				 ) 
+				 <!-- where rn between 1 and 5   -->
+
+</select>
+
+<!-- getDayList -->
+<select id="getDayList" parameterType="java.lang.Integer"
+					resultType = "sist.co.model.CalendarDTO">
+	
+	SELECT SEQ, ID, TITLE, CONTENT, RDATE, WDATE 
+	FROM MYCALENDAR
+	WHEREE ID = #{ID}, SUBSTR(RDATE ,1 ,8) = #{RDATE}
+	ORDER BY RDATE
+
+
+
+</select>
+<!-- getDay -->
+<select id="getDay" parameterType="java.lang.Integer"
+					resultType = "sist.co.model.CalendarDTO">
+	SELECT SEQ, ID, TITLE, CONTENT, RDATE, WDATE 
+	FROM MYCALENDAR
+	WHERE SEQ = #{SEQ}
+	
+	</select>
+	
+	
+<!-- updateCal -->
+<update id="updateCal" parameterType="java.lang.Integer">
+	UPDATE MYCALENDAR SET TITLE = #{TITLE} , CONTENT = #{CONTENT}, RDATE = #{RDATE}
+	WHERE SEQ = #{SEQ}
+
+</update>
+
+
+<!-- deleteCal -->
+<delete id="deleteCal" parameterType="java.lang.Integer">
+	DELETE FROM MYCALENDAR WHERE SEQ = #{SEQ}
+
+</delete>
+
+
+
+</mapper>
