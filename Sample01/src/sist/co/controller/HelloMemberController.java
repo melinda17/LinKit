@@ -18,7 +18,7 @@ public class HelloMemberController {
 	
 private static final Logger logger = LoggerFactory.getLogger(HelloMemberController.class);
 	
-//Hello from the outside~~
+
 		//자동적으로 가게 되는 곳
 	@RequestMapping(value = "login.do", method = RequestMethod.GET)	
 	public String login(Model model) {		
