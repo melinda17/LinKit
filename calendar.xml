@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 </insert>
 
+<!--Modifying Test-->
 <!--getCalendarList  -->
 <select id="getCalendarList" parameterType="java.util.Map"
 							 resultType="sist.co.model.CalendarDTO">
